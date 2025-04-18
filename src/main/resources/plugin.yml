@@ -3,7 +3,7 @@ version: '1.0'
 main: org.yuyukon.softDeath.SoftDeath
 api-version: '1.21'
 authors: [Yuyukon]
-description: A plugin soften death punishment without keepInventory.
+description: A plugin soften death punishment without KeepInventory.
 commands:
   testprice:
     description: 设置测试价格

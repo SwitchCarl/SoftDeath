@@ -51,7 +51,7 @@ public class DeathData {
         this.money = expOnDeath;
         this.averageLivingTime = averageLivingTime;
         this.respawnDone = false;
-
+        // 重置特价
         this.discountBucket = 1;
         this.discountFightOrFlight = 2;
         this.discountCheapBlock = 1;
@@ -76,6 +76,7 @@ public class DeathData {
             this.Kt = 1;
         }
 
+        // 重置掉落物苦痛
         this.isDropDiedFromVoid = false;
         this.isDropDiedFromExplosion = false;
         this.isDropDiedFromCactus = false;
@@ -87,8 +88,6 @@ public class DeathData {
     public void setIsTestPriceOn(boolean isTestPriceOn){
         this.isTestPriceOn = isTestPriceOn;
     }
-
-
 
     public void submitDropEvent(int eventCode){
         switch (eventCode){
@@ -133,8 +132,7 @@ public class DeathData {
     //endregion
 
     public ItemStack[] getInventory() { return inventory; }
-
-    public void buyInventoryOnDeath(int slot) { this.inventory[slot] = new ItemStack(Material.AIR); }
+    public void buyInventory(int slot) { this.inventory[slot] = new ItemStack(Material.AIR); }
 
     public int getExpOnDeath(){ return expOnDeath; }
     public int getMoney() { return money; }
