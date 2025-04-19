@@ -11,16 +11,7 @@
 - 同样因为开发本插件的目的主要在于自用，GUI内容以全中文显示，请见谅。
 
 ## 安装步骤
-### 构建步骤
-
-
-- 1. 使用命令行构建JAR文件：
-```bash
-git clone https://github.com/SwitchCarl/SoftDeath.git
-cd softdeath
-mvn clean package
-```
-   生成的 JAR 文件位于 `target/` 目录
+- 1. 构建 jar 文件。
 - 2. 建议直接新建 `plugins/SoftDeath/config.yml` 文件，然后以 Releases 页面中的 `src\main\resources\config.yml` 文件覆盖，再按需修改内容。（所有项都未设置默认值；因此请不要擅自删除任何未使用（更改）的项）。
 - 3. 在 `Server.properties` 中启用 `KeepInventory`。
 - 4. 启动服务器。  
