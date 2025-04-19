@@ -32,12 +32,9 @@ public final class SoftDeath extends JavaPlugin implements Listener{
 
     @Override
     public void reloadConfig() {
-        super.reloadConfig(); // 调用父类方法重新加载文件
+        super.reloadConfig();
         if (priceCalculate != null) {
             priceCalculate.loadConfig();
-            getLogger().info("配置热重载成功");
-        } else {
-            getLogger().warning("配置组件未初始化，跳过重载");
         }
     }
 

@@ -59,9 +59,9 @@ public class DeathData {
         if (!isTestPriceOn) {
             // 计算玩家水平系数
             if (averageLivingTime <= 720000)
-                this.Kl = (float) (0.3*Math.log((averageLivingTime/(240*1200))+0.1)+1.1);
+                this.Kl = (float) (0.3*Math.log((averageLivingTime/(240*1200))+0.1)+0.715);
             else
-                this.Kl = 1.385F;
+                this.Kl = 1;
 
             // 计算上条命时长系数
             if (lastLivingTime <= 8400){
@@ -72,7 +72,7 @@ public class DeathData {
                 this.Kt = BigDecimal.valueOf(0.2977181197025617 * Math.exp(-Math.pow( lastLivingTime - 70700.0, 2) / 8.978E9) + 1.05).setScale(5, RoundingMode.HALF_UP).floatValue();
             }
         }else {
-            this.Kl = 1.385F;
+            this.Kl = 1;
             this.Kt = 1;
         }
 
@@ -165,24 +165,11 @@ public class DeathData {
     }
 
     public Boolean getIsDiscountAvailable(int discountCode){
-        switch (discountCode){
-            case 0:
-                if (this.discountBucket > 0)
-                    return true;
-                else
-                    return false;
-            case 1:
-                if (this.discountFightOrFlight > 0)
-                    return true;
-                else
-                    return false;
-            case 2:
-                if (this.discountCheapBlock > 0)
-                    return true;
-                else
-                    return false;
-            default:
-                return false;
-        }
+        return switch (discountCode) {
+            case 0 -> this.discountBucket > 0;
+            case 1 -> this.discountFightOrFlight > 0;
+            case 2 -> this.discountCheapBlock > 0;
+            default -> false;
+        };
     }
 }

@@ -1,12 +1,13 @@
-K-type:
-    rare: 6.0
-    armor: 4.8
-    advanced-resource: 3.2
-    tool-and-weapon: 3.5
-K-material:
-    diamond: 1.3
-    netherite: 1.45
-K-enchantment:
+Basic: 19                           # 基础价格
+K-type:                             # 类型系数
+    rare: 6.0                       # 稀有物品
+    armor: 4.8                      # 盔甲
+    advanced-resource: 3.2          # 高级资源
+    tool-and-weapon: 2.8            # 工具与武器
+K-material:                         # 材质系数
+    diamond: 1.3                    # 钻石
+    netherite: 1.45                 # 下界合金
+K-enchantment:                      # 附魔系数
     enchanted: 1.2
 rare-item:
     - ENCHANTED_GOLDEN_APPLE	# 附魔金苹果
@@ -22,7 +23,7 @@ rare-item:
     - DRAGON_HEAD				# 龙首
     - TOTEM_OF_UNDYING			# 不死图腾
     - BEACON					# 信标
-advanced-resource-item:
+advanced-resource-item:             # 高级资源
     - EXPERIENCE_BOTTLE			# 附魔之瓶
     - ENDER_EYE					# 末影之眼
     - DIAMOND_HORSE_ARMOR		# 钻石马铠
@@ -88,7 +89,7 @@ advanced-resource-item:
     - FLOW_ARMOR_TRIM_SMITHING_TEMPLATE			# 涡流盔甲纹饰
     - BOLT_ARMOR_TRIM_SMITHING_TEMPLATE			# 镶铆盔甲纹饰
     
-armor-item:
+armor-item:                                 # 盔甲
     - LEATHER_CHESTPLATE			# 皮革胸甲
     - CHAINMAIL_CHESTPLATE			# 锁链胸甲
     - IRON_CHESTPLATE				# 铁胸甲
@@ -119,7 +120,7 @@ armor-item:
     - GOLDEN_HORSE_ARMOR			# 金马铠
     - DIAMOND_HORSE_ARMOR			# 钻石马铠
     - WOLF_ARMOR					# 狼铠
-tool-and-weapon-item:
+tool-and-weapon-item:                     # 工具与武器
     - WOODEN_AXE				# 木斧
     - STONE_AXE					# 石斧
     - IRON_AXE					# 铁斧

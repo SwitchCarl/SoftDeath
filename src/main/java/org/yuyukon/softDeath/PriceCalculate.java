@@ -17,9 +17,10 @@ import static org.bukkit.Bukkit.getServer;
 
 public class PriceCalculate {
 
-    private final JavaPlugin plugin;
     private static FileConfiguration config;
 
+
+    private static Double Basic;
     private static Double T_Rare;
     private static Double T_Armor;
     private static Double T_AdvancedResource;
@@ -34,19 +35,23 @@ public class PriceCalculate {
 
 
     public PriceCalculate(JavaPlugin plugin) {
-        this.plugin = plugin;
-        this.config = plugin.getConfig();
+        config = plugin.getConfig();
     }
 
     public void loadConfig(){
+
+        Basic = config.getDouble("Basic");
 
         T_Rare = config.getDouble("K-type.rare");
         T_Armor = config.getDouble("K-type.armor");
         T_AdvancedResource = config.getDouble("K-type.advanced-resource");
         T_ToolAndWeapon = config.getDouble("K-type.tool-and-weapon");
+
         M_Diamond = config.getDouble("K-material.diamond");
         M_Netherite = config.getDouble("K-material.netherite");
+
         E_Enchanted = config.getDouble("K-enchantment.enchanted");
+
         RareItem = convertStringListToMaterials(config.getStringList("rare-item"));
         AdvancedResourceItem = convertStringListToMaterials(config.getStringList("advanced-resource-item"));
         ArmorItem = convertStringListToMaterials(config.getStringList("Armor-item"));
@@ -58,13 +63,13 @@ public class PriceCalculate {
         return strings.stream()
                 .map(s -> {
                     try {
-                        return Material.valueOf(s.toUpperCase()); // Material 枚举是大写的
+                        return Material.valueOf(s.toUpperCase());
                     } catch (IllegalArgumentException e) {
                         getLogger().warning("Invalid material in config: " + s);
                         return null;
                     }
                 })
-                .filter(material -> material != null)
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
 
@@ -127,6 +132,7 @@ public class PriceCalculate {
         }
 
         // 优惠启用
+        // 特价功能特异性较强，并未实现文件配置；
         switch (iS.getType()){
             case WATER_BUCKET :
                 if (DeathDataManager.getInstance().getData(player).getIsDiscountAvailable(0))
@@ -148,7 +154,7 @@ public class PriceCalculate {
                 break;
         }
 
-        return BigDecimal.valueOf(17 * Kl * Kt * M * E * T * S).setScale(0, RoundingMode.HALF_UP).intValue();
+        return BigDecimal.valueOf(Basic * Kl * Kt * M * E * T * S).setScale(0, RoundingMode.HALF_UP).intValue();
     }
 
 }
