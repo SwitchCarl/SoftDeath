@@ -341,7 +341,6 @@ public class EventListeners implements Listener {
 
                     //region-title                                                                                      |===赎回物品===>
                                                                                                                         //region Buy Items Back
-
                     // 缴费
                     deathData.spendMoney(PriceCalculate.getPrice(goods, player));
 

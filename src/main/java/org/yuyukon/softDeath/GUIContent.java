@@ -78,9 +78,10 @@ public class GUIContent {
         ItemStack itemFirework = new ItemStack(Material.FIREWORK_ROCKET);
         ItemMeta metaFirework = itemFirework.getItemMeta();
         assert metaFirework != null;
-        metaFirework.setDisplayName(ChatColor.GOLD + "广播坐标");
+        metaFirework.setDisplayName(ChatColor.GOLD + "广播坐标！");
         List<String> loreFirework = new ArrayList<>();
         loreFirework.add(ChatColor.GRAY + "点击以更新并广播当前掉落物的坐标！");
+        metaFirework.setLore(null);
         metaFirework.setLore(loreFirework);
         itemFirework.setItemMeta(metaFirework);
         displayInventory.setItem(48, itemFirework);
@@ -90,13 +91,15 @@ public class GUIContent {
 
         // 填充显示掉落物警告的下界之星
         displayInventory.setItem(50, dropEventShow(player));
+
         // 填充显示可用经验的一叠经验瓶
         displayInventory.setItem(51, expShow(DeathDataManager.getInstance().getData(player).getMoney()));
+
         // 填充用于退出GUI的屏障
         ItemStack itemBarrier = new ItemStack(Material.BARRIER);
         ItemMeta metaBarrier = itemBarrier.getItemMeta();
         assert metaBarrier != null;
-        metaBarrier.setDisplayName("退出");
+        metaBarrier.setDisplayName(ChatColor.RED + "退出！");
         List<String> loreBarrier = new ArrayList<>();
         loreBarrier.add(ChatColor.GRAY + "点击以退出界面。");
         metaBarrier.setLore(loreBarrier);
@@ -127,9 +130,9 @@ public class GUIContent {
         ItemStack expShowcase = new ItemStack(Material.EXPERIENCE_BOTTLE, Math.max(Math.min(level, 64),1));
         ItemMeta meta = expShowcase.getItemMeta();
         List<String> lore = new ArrayList<>();
-        lore.add(ChatColor.GREEN + "经验：" + exp);
+        lore.add(ChatColor.DARK_GREEN + "等级：" + level);
         assert meta != null;
-        meta.setDisplayName(ChatColor.DARK_GREEN + "等级：" + level);
+        meta.setDisplayName(ChatColor.GOLD + "经验：" + exp);
         meta.setLore(lore);
         expShowcase.addUnsafeEnchantment(Enchantment.MENDING, 1);
         expShowcase.setItemMeta(meta);
@@ -203,7 +206,7 @@ public class GUIContent {
         ItemStack dropEventShowcase = new ItemStack(Material.NETHER_STAR);
         ItemMeta meta = dropEventShowcase.getItemMeta();
         List<String> lore = new ArrayList<>();
-        meta.setDisplayName(ChatColor.DARK_RED + "WARNING!!!");
+        meta.setDisplayName(ChatColor.DARK_RED + "警告！");
 
         //region-title                                                                                                  |==警示标语==>
         //region Add Warning Sign
@@ -218,7 +221,8 @@ public class GUIContent {
         if (DeathDataManager.getInstance().getData(player).getDropDiedFromVoid())
             lore.add(ChatColor.DARK_RED + "您的掉落物已遁入虚空：所有未赎回物品将消失！");
         if (lore.isEmpty()) {
-            meta.setDisplayName(ChatColor.GREEN + "您的掉落物暂时安全。跑尸快乐！");
+            meta.setDisplayName(ChatColor.GOLD + "您的掉落物暂时安全。");
+            lore.add(ChatColor.DARK_GREEN + "跑尸快乐！");
         }
         //endregion
 
@@ -234,13 +238,13 @@ public class GUIContent {
         List<String> loreSign = new ArrayList<>();
         assert metaSign != null;
 
-        metaSign.setDisplayName(ChatColor.DARK_GREEN + "特价显示");
+        metaSign.setDisplayName(ChatColor.GOLD + "可用特价：");
         if (DeathDataManager.getInstance().getData(player).getIsDiscountAvailable(0))
-            loreSign.add(ChatColor.GREEN + "水桶特价可用！");
+            loreSign.add(ChatColor.DARK_GREEN + "水桶特价可用！");
         if (DeathDataManager.getInstance().getData(player).getIsDiscountAvailable(1))
-            loreSign.add(ChatColor.GREEN + "战逃反应特价可用！");
+            loreSign.add(ChatColor.DARK_GREEN + "战逃反应特价可用！");
         if (DeathDataManager.getInstance().getData(player).getIsDiscountAvailable(2))
-            loreSign.add(ChatColor.GREEN + "垫脚方块特价可用！");
+            loreSign.add(ChatColor.DARK_GREEN + "垫脚方块特价可用！");
         if (loreSign.isEmpty())
             loreSign.add(ChatColor.DARK_RED + "无可用特价！");
 
