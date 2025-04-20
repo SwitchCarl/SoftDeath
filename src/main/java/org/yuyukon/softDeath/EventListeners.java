@@ -24,9 +24,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
-import static org.bukkit.Bukkit.getLogger;
 import static org.bukkit.Bukkit.getServer;
 import static org.yuyukon.softDeath.SoftDeath.MARKER_OWNER;
 
@@ -58,9 +56,7 @@ public class EventListeners implements Listener {
         }
         // 若仍处于未重生状态，20tick后启动gui
         if (!DeathDataManager.getInstance().getData(event.getPlayer()).getRespawnDone())
-            Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
-                guiContent.guiInitialize(event.getPlayer());
-            }, 20L);
+            Bukkit.getScheduler().runTaskLater(this.plugin, () -> guiContent.guiInitialize(event.getPlayer()), 20L);
         // 开始追踪
         eventTrackers.trackPlayer(event.getPlayer());
     }
@@ -167,9 +163,7 @@ public class EventListeners implements Listener {
         //endregion
 
         // 音效：信标切换效果（延迟10tick）
-        Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            player.playSound(player, Sound.BLOCK_BEACON_POWER_SELECT, 1.0f, 1.0f);
-        }, 10L);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> player.playSound(player, Sound.BLOCK_BEACON_POWER_SELECT, 1.0f, 1.0f), 10L);
 
         // 启动GUI
         guiContent.guiInitialize(player);
@@ -184,6 +178,7 @@ public class EventListeners implements Listener {
                 // 通过名字获取这个玩家
                 Player player = Bukkit.getPlayer(Objects.requireNonNull(item.getPersistentDataContainer().get(MARKER_OWNER, PersistentDataType.STRING)));
                 // 如果这个玩家已经重生完毕了
+                assert player != null;
                 if (DeathDataManager.getInstance().getData(player).getRespawnDone())
                     item.remove();
                 else {
@@ -219,9 +214,7 @@ public class EventListeners implements Listener {
     @EventHandler//                                                                                                     Reopen GUI when Unexpectedly Closed
     public void avoidGUIClose(InventoryCloseEvent event){
         if (!DeathDataManager.getInstance().getData((Player) event.getPlayer()).getRespawnDone()){
-            Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                guiContent.guiInitialize((Player) event.getPlayer());
-            }, 2L);
+            Bukkit.getScheduler().runTaskLater(plugin, () -> guiContent.guiInitialize((Player) event.getPlayer()), 2L);
         }
     }
 
@@ -240,7 +233,7 @@ public class EventListeners implements Listener {
 
                 player.playSound(player, Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 1.0f, 1.0f);
                 Location dropLocation = DeathDataManager.getInstance().getData(player).getDropLocation();
-                String dimensionName = switch (dropLocation.getWorld().getName()) {
+                String dimensionName = switch (Objects.requireNonNull(dropLocation.getWorld()).getName()) {
                     case "world" -> (ChatColor.DARK_GREEN + "主世界");
                     case "world_nether" -> (ChatColor.DARK_RED + "下界");
                     case "world_the_end" -> (ChatColor.DARK_PURPLE + "末地");
@@ -401,9 +394,7 @@ public class EventListeners implements Listener {
                                 deathData.spendDiscount(2);
                         event.getView().close();
                     }
-                    Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                        event.getView().setTitle(GUIContent.guiTitle(deathData.getMoney(), player, false));
-                    }, 5L);
+                    Bukkit.getScheduler().runTaskLater(plugin, () -> event.getView().setTitle(GUIContent.guiTitle(deathData.getMoney(), player, false)), 5L);
                     //endregion
                 }
                 else {
