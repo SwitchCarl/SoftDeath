@@ -19,25 +19,30 @@ public class PriceCalculate {
 
     private static FileConfiguration config;
 
-
     private static Double Basic;
+
     private static Double T_Rare;
     private static Double T_Armor;
     private static Double T_AdvancedResource;
     private static Double T_ToolAndWeapon;
+
     private static Double M_Diamond;
     private static Double M_Netherite;
+
     private static Double E_Enchanted;
+
     private static List<Material> RareItem;
     private static List<Material> AdvancedResourceItem;
     private static List<Material> ArmorItem;
-    private static List<Material> ToolAndWeapon;
+    private static List<Material> ToolAndWeaponItem;
+
+    private static List<Material> CheapBlockItem;
 
 
     public PriceCalculate(JavaPlugin plugin) {
         config = plugin.getConfig();
     }
-
+    //method-title                                                                                                      |====加载配置====>
     public void loadConfig(){
 
         Basic = config.getDouble("Basic");
@@ -52,28 +57,14 @@ public class PriceCalculate {
 
         E_Enchanted = config.getDouble("K-enchantment.enchanted");
 
-        RareItem = convertStringListToMaterials(config.getStringList("rare-item"));
-        AdvancedResourceItem = convertStringListToMaterials(config.getStringList("advanced-resource-item"));
-        ArmorItem = convertStringListToMaterials(config.getStringList("Armor-item"));
-        ToolAndWeapon = convertStringListToMaterials(config.getStringList("tool-and-weapon-item"));
-        getServer().broadcastMessage(RareItem.toString());
+        RareItem = DeepClone.convertStringListToMaterials(config.getStringList("rare-item"));
+        AdvancedResourceItem = DeepClone.convertStringListToMaterials(config.getStringList("advanced-resource-item"));
+        ArmorItem = DeepClone.convertStringListToMaterials(config.getStringList("Armor-item"));
+        ToolAndWeaponItem = DeepClone.convertStringListToMaterials(config.getStringList("tool-and-weapon-item"));
+
+        CheapBlockItem = DeepClone.convertStringListToMaterials(config.getStringList("cheap-block-item"));
+
     }
-
-    private static List<Material> convertStringListToMaterials(List<String> strings) {
-        return strings.stream()
-                .map(s -> {
-                    try {
-                        return Material.valueOf(s.toUpperCase());
-                    } catch (IllegalArgumentException e) {
-                        getLogger().warning("Invalid material in config: " + s);
-                        return null;
-                    }
-                })
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-    }
-
-
 
 
     //method-title                                                                                                      |====计算价格====>
@@ -87,7 +78,7 @@ public class PriceCalculate {
         T = 1;
         E = 1;
 
-        // 物品堆叠系数
+        //region-title                                                                                                  |===堆叠系数===>
         S = 0.13 * Math.log(iS.getAmount()) + 1 ;
 
         //region-title                                                                                                  |===类别系数===>
@@ -107,8 +98,8 @@ public class PriceCalculate {
         if (AdvancedResourceItem.contains(iS.getType()))
             T = T_AdvancedResource;
 
-        // 工具与材料武器类
-        if (ToolAndWeapon.contains(iS.getType())){
+        // 工具与武器类
+        if (ToolAndWeaponItem.contains(iS.getType())){
             T = T_ToolAndWeapon ;
             M = 0;
         }
@@ -126,13 +117,14 @@ public class PriceCalculate {
         }
         //endregion
 
-        // 附魔系数
+        //region-title                                                                                                  |===附魔系数===>
         if (!Objects.requireNonNull(iS.getItemMeta()).getEnchants().isEmpty()){
             E = E_Enchanted;
         }
 
-        // 优惠启用
-        // 特价功能特异性较强，并未实现文件配置；
+        //region-title                                                                                                  |===启用特价===>
+                                                                                                                        //region Discount
+        // 特价功能特异性较强，并未完全实现文件配置；
         switch (iS.getType()){
             case WATER_BUCKET :
                 if (DeathDataManager.getInstance().getData(player).getIsDiscountAvailable(0))
@@ -145,14 +137,11 @@ public class PriceCalculate {
                 if (DeathDataManager.getInstance().getData(player).getIsDiscountAvailable(1))
                     return 0;
                 break;
-            case DIRT:
-            case STONE:
-            case COBBLESTONE:
-            case NETHERRACK:
-                if (DeathDataManager.getInstance().getData(player).getIsDiscountAvailable(2))
-                    return 0;
-                break;
         }
+        if (CheapBlockItem.contains(iS.getType())
+                && DeathDataManager.getInstance().getData(player).getIsDiscountAvailable(2))
+            return 0;
+        //endregion
 
         return BigDecimal.valueOf(Basic * Kl * Kt * M * E * T * S).setScale(0, RoundingMode.HALF_UP).intValue();
     }

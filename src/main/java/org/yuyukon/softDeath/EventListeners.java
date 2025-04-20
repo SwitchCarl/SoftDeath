@@ -1,6 +1,7 @@
 package org.yuyukon.softDeath;
 
 import org.bukkit.*;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,8 +22,11 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
+import static org.bukkit.Bukkit.getLogger;
 import static org.bukkit.Bukkit.getServer;
 import static org.yuyukon.softDeath.SoftDeath.MARKER_OWNER;
 
@@ -32,10 +36,17 @@ public class EventListeners implements Listener {
     private final EventTrackers eventTrackers;
     private final GUIContent guiContent;
 
+    private static List<Material> cheapBlockItem;
+
+    //method-title                                                                                                      |====监听注册====>
     public EventListeners(JavaPlugin plugin, EventTrackers eventTrackers, GUIContent guiContent){
         this.plugin = plugin;
         this.eventTrackers = eventTrackers;
         this.guiContent = guiContent;
+
+        // 导入部分特价信息
+        FileConfiguration config = plugin.getConfig();
+        cheapBlockItem = DeepClone.convertStringListToMaterials(config.getStringList("cheap-block-item"));
     }
 
     //method-title                                                                                                      |====玩家注册：进服监听====>
@@ -127,7 +138,7 @@ public class EventListeners implements Listener {
         player.addPotionEffect(new PotionEffect(
                 PotionEffectType.BLINDNESS,
                 Integer.MAX_VALUE,
-                50,
+                1,
                 false,
                 false
         ));
@@ -252,7 +263,7 @@ public class EventListeners implements Listener {
                 player.giveExp((int) (0.7f * DeathDataManager.getInstance().getData(player).getMoney()));
 
                 //region-title                                                                                          |===解冻玩家===>
-                //region Unfreeze Player
+                                                                                                                        //region Unfreeze Player
                 player.setGameMode(GameMode.SURVIVAL);
                 player.setWalkSpeed(0.2f);
                 player.setFlySpeed(0.1f);
@@ -263,7 +274,7 @@ public class EventListeners implements Listener {
                 //endregion
 
                 //region-title                                                                                          |===掉落物品===>
-                //region Drop Inventory Items
+                                                                                                                        //region Drop Inventory Items
                 DeathData deathData = DeathDataManager.getInstance().getData(player);
                 assert player.getLastDeathLocation() != null;
                 for (int i = 0; i <= 40; i++){
@@ -276,7 +287,7 @@ public class EventListeners implements Listener {
                         if (deathData.getDropDiedFromExplosion()){
                             // 仅下界之星可以掉落
                             if (deathData.getInventory()[i].getType() == Material.NETHER_STAR)
-                                player.getLastDeathLocation().getWorld().dropItem(deathData.getDropLocation(),
+                                Objects.requireNonNull(player.getLastDeathLocation().getWorld()).dropItem(deathData.getDropLocation(),
                                         deathData.getInventory()[i]);
                         }
                         // 若 Marker 遭受火焰或岩浆
@@ -298,7 +309,7 @@ public class EventListeners implements Listener {
                                 case NETHERITE_UPGRADE_SMITHING_TEMPLATE:
                                 case LODESTONE:
                                 case ANCIENT_DEBRIS: {
-                                    player.getLastDeathLocation().getWorld().dropItem(deathData.getDropLocation(),
+                                    Objects.requireNonNull(player.getLastDeathLocation().getWorld()).dropItem(deathData.getDropLocation(),
                                             deathData.getInventory()[i]);
                                     break;
                                 }
@@ -309,7 +320,7 @@ public class EventListeners implements Listener {
                                 !deathData.getDropOnFire() &&
                                 !deathData.getDropDiedFromVoid() &&
                                 !deathData.getDropDiedFromExplosion())
-                            player.getLastDeathLocation().getWorld().dropItem(deathData.getDropLocation(),
+                            Objects.requireNonNull(player.getLastDeathLocation().getWorld()).dropItem(deathData.getDropLocation(),
                                     deathData.getInventory()[i]);
                     }
                 }
@@ -384,14 +395,10 @@ public class EventListeners implements Listener {
                                 if (deathData.getIsDiscountAvailable(1))
                                     deathData.spendDiscount(1);
                                 break;
-                            case DIRT:
-                            case STONE:
-                            case COBBLESTONE:
-                            case NETHERRACK:
-                                if (deathData.getIsDiscountAvailable(2))
-                                    deathData.spendDiscount(2);
-                                break;
                         }
+                        if (cheapBlockItem.contains(goods.getType()))
+                            if (deathData.getIsDiscountAvailable(2))
+                                deathData.spendDiscount(2);
                         event.getView().close();
                     }
                     Bukkit.getScheduler().runTaskLater(plugin, () -> {

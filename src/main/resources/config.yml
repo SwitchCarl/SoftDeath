@@ -61,7 +61,7 @@ advanced-resource-item:             # 高级资源
     - MUSIC_DISC_MELLOHI
     - MUSIC_DISC_PRECIPICE
     - MUSIC_DISC_STAL
-    - MUSIC_DISC_STAL
+    - MUSIC_DISC_STRAD
     - MUSIC_DISC_WARD
     - MUSIC_DISC_11
     - MUSIC_DISC_WAIT
@@ -115,7 +115,7 @@ armor-item:                                 # 盔甲
     - GOLDEN_HELMET					# 金头盔
     - NETHERITE_HELMET				# 下界合金头盔
     - TURTLE_HELMET					# 海龟壳
-    - LETHER_HORSE_ARMOR			# 皮革马铠
+    - LEATHER_HORSE_ARMOR			# 皮革马铠
     - IRON_HORSE_ARMOR				# 铁马铠
     - GOLDEN_HORSE_ARMOR			# 金马铠
     - DIAMOND_HORSE_ARMOR			# 钻石马铠
@@ -156,5 +156,48 @@ tool-and-weapon-item:                     # 工具与武器
     - SHIELD					# 盾
     - CROSSBOW					# 弩
     - BOW						# 弓
-
+cheap-block-item:                       # 廉价方块
+    - OAK_PLANKS				# 橡木木板
+    - SPRUCE_PLANKS				# 云杉木板
+    - BIRCH_PLANKS				# 白桦木板
+    - JUNGLE_PLANKS				# 丛林木板
+    - ACACIA_PLANKS				# 金合欢木板
+    - DARK_OAK_PLANKS			# 深色橡木木板
+    - MANGROVE_PLANKS			# 红树木板
+    - CHERRY_PLANKS				# 樱花木板
+    - BAMBOO_PLANKS				# 竹板
+    - PALE_OAK_PLANKS			# 苍白橡木木板
+    - CRIMSON_PLANKS			# 绯红木板
+    - WARPED_PLANKS				# 诡异木板
+    - OAK_LEAVES				# 橡树树叶
+    - SPRUCE_LEAVES				# 云杉树叶
+    - BIRCH_LEAVES				# 白桦树叶
+    - JUNGLE_LEAVES				# 丛林树叶
+    - ACACIA_LEAVES				# 金合欢树叶
+    - DARK_OAK_LEAVES			# 深色橡树树叶
+    - MANGROVE_LEAVES			# 红树树叶
+    - CHERRY_LEAVES				# 樱花树叶
+    - AZALEA_LEAVES				# 杜鹃树叶
+    - FLOWERING_AZALEA_LEAVES	# 盛开的杜鹃树叶
+    - PALE_OAK_LEAVES			# 苍白橡树树叶
+    - ANDESITE					# 安山岩
+    - BASALT					# 玄武岩
+    - DIORITE					# 闪长岩
+    - GRANITE					# 花岗岩
+    - DEEPSLATE					# 深板岩
+    - COBBLED_DEEPSLATE			# 深板岩圆石
+    - STONE						# 石头
+    - COBBLEDSTONE				# 圆石
+    - MOSSY_COBBLESTONE			# 苔石
+    - SANDSTONE					# 砂岩
+    - RED_SANDSTONE				# 红砂岩
+    - SAND						# 沙子
+    - RED_SAND					# 红沙
+    - GRAVEL					# 沙砾
+    - COARSE_DIRT				# 砂土
+    - DIRT						# 泥土
+    - MOSS_BLOCK				# 苔藓块
+    - MUD						# 泥巴
+    - NETHERRACK				# 下界岩
+    - END_STONE					# 末地石
 
