@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class GUIContent {
 
@@ -36,7 +37,7 @@ public class GUIContent {
                     if (!allInventoryContentDisplay[i].getType().isAir()) {
                         assert meta != null;
                         if (meta.hasLore()){
-                            meta.getLore().add(ChatColor.GREEN + "价格：" + PriceCalculate.getPrice(allInventoryContentDisplay[i], player));
+                            Objects.requireNonNull(meta.getLore()).add(ChatColor.GREEN + "价格：" + PriceCalculate.getPrice(allInventoryContentDisplay[i], player));
                             meta.getLore().add(ChatColor.GREEN + "[" + guiTitle(PriceCalculate.getPrice(allInventoryContentDisplay[i], player), player, false) + ChatColor.GREEN + "]");
                         }
                         else {
@@ -161,7 +162,7 @@ public class GUIContent {
                 BigDecimal.valueOf(dropLocation.getY()).setScale(2, RoundingMode.HALF_UP) + ", " +
                 BigDecimal.valueOf(dropLocation.getZ()).setScale(2, RoundingMode.HALF_UP) + ")");
 
-        switch (dropLocation.getWorld().getName()){
+        switch (Objects.requireNonNull(dropLocation.getWorld()).getName()){
             case "world":
                 lore.add(ChatColor.GRAY + "掉落物位于：" + ChatColor.DARK_GREEN + "主世界");
                 break;
@@ -182,7 +183,7 @@ public class GUIContent {
                 BigDecimal.valueOf(deathLocation.getY()).setScale(2, RoundingMode.HALF_UP) + ", " +
                 BigDecimal.valueOf(deathLocation.getZ()).setScale(2, RoundingMode.HALF_UP) + ")");
 
-        switch (deathLocation.getWorld().getName()){
+        switch (Objects.requireNonNull(deathLocation.getWorld()).getName()){
             case "world":
                 lore.add(ChatColor.GRAY + "死亡于：" + ChatColor.DARK_GREEN + "主世界");
                 break;
@@ -206,6 +207,7 @@ public class GUIContent {
         ItemStack dropEventShowcase = new ItemStack(Material.NETHER_STAR);
         ItemMeta meta = dropEventShowcase.getItemMeta();
         List<String> lore = new ArrayList<>();
+        assert meta != null;
         meta.setDisplayName(ChatColor.DARK_RED + "警告！");
 
         //region-title                                                                                                  |==警示标语==>
