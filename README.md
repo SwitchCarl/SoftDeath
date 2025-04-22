@@ -10,23 +10,30 @@
 - 代码中有人工智能编写成分，请注意辨别。
 - 同样因为开发本插件的目的主要在于自用，GUI内容以全中文显示，请见谅。
 
-## 安装步骤
-- 1. 构建 jar 文件。
-- 2. 建议直接新建 `plugins/SoftDeath/config.yml` 文件，然后以 Releases 页面中的 `src\main\resources\config.yml` 文件覆盖，再按需修改内容。（所有项都未设置默认值；因此请不要擅自删除任何未使用（更改）的项）。
-- 3. 在 `Server.properties` 中启用 `KeepInventory`。
-- 4. 启动服务器。  
+## 使用说明
+
+### 安装步骤
+1. 构建 jar 文件。
+2. 建议直接新建 `plugins/SoftDeath/config.yml` 文件，然后以 Releases 页面中的 `src\main\resources\config.yml` 文件覆盖，再按需修改内容。（所有项都未设置默认值；因此请不要擅自删除任何未使用（更改）的项）。
+3. 在 `Server.properties` 中启用 `KeepInventory`。
+4. 启动服务器。  
 
 > **注**：不允许在玩家进入服务器后重载插件。建议永远使用重启服务器来重载插件。
 
-## 命令
+### 配置文件格式
+见 `src\main\resources\config.yml` 及其中的注释。建议在增添物品时也加入物品的中文名注释。
+
+### 命令
 ```/testprice <true|false> <Player>```  
 为玩家启用（或禁用）测试价格。启用时，玩家的价格调整系数恒为1（不调整）。
 
-## 部分保护策略
+## 功能简介
+
+### 部分保护策略
 - 当玩家上次存活时间少于七分钟时，判定玩家死于跑尸，从而大幅降低价格。
 - 玩家物品栏中的部分物品可以免费（注释称"特价"）赎回几组，如铁剑和便宜的垫脚方块，鼓励玩家通过跑尸来拿回剩下的物品（跑尸行为更接近原版生存）。
 
-## GUI内容
+### GUI内容
 - **GUI标题栏**：以百分比形式通过`|`符号显示玩家剩余可用的经验。当玩家点击物品（不通过按住shift移动物品）时，会以绿色的`|`预测玩家将要使用的经验值。
 - **GUI底部**：
    - i. 竹制告示牌：显示特价可用内容。
@@ -37,8 +44,19 @@
    - vi. 经验瓶：显示确切的剩余经验。
    - vii. 屏障：退出GUI，返还未使用的经验的80%，并将未被赎回的掉落物重现在掉落物坐标。
 
-## 配置文件格式
-见 `src\main\resources\config.yml` 及其中的注释。建议在增添物品时也加入物品的中文名注释。
+### GUI展示
+- 当玩家重生时，显示GUI：  
+![When Respawn.png](images%2FWhen%20Respawn.png)
+- 通过移动光标查看钻石锄的价格：  
+![Show Price.png](images%2FShow%20Price.png)
+- 特价的铁剑：  
+![Discount Item.png](images%2FDiscount%20Item.png)
+- 当启用测试价格时，玩家系数被强制设置为1：  
+![Test Price On.png](images%2FTest%20Price%20On.png)
+- 点击一个物品，预测它将要花费的价格所占总经验百分比：  
+![Predict Price.png](images%2FPredict%20Price.png)  
+- 当买下一个物品时：  
+![Buy Item.png](images%2FBuy%20Item.png)
 
 ## 注意事项
 - 本插件未添加任何其他插件的适配性内容。换言之，任何插件的同时启用都可能导致本插件崩溃（尤其是会启动自定义GUI的插件）。请谨慎在多插件服务器中使用。
