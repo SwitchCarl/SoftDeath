@@ -3,8 +3,8 @@
 **Spigot API 1.21**  
 
 
-> _<div style="text-align: center;">“...and death was a temporary inconvenience.”</div>_  
-> <div style="text-align: right;">—— Julian Gough, <em>End Poem</em></div>
+> <p align = "center"><em>“...and death was a temporary inconvenience.”</em></p>
+> <p align = "right">—— Julian Gough, <em>End Poem</em></p>
 
 ## 简介
 - 为游戏新手（甚至是电脑新手）友好服务器设计的柔性死亡惩罚系统。尽量保留生存挑战性、缓解游戏寿命缩短的同时降低死亡带来的挫败感。
