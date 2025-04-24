@@ -2,6 +2,10 @@
 **Minecraft Version 1.21.4**  
 **Spigot API 1.21**  
 
+
+> _<div style="text-align: center;">“...and death was a temporary inconvenience.”</div>_  
+> <div style="text-align: right;">—— Julian Gough, <em>End Poem</em></div>
+
 ## 简介
 - 为游戏新手（甚至是电脑新手）友好服务器设计的柔性死亡惩罚系统。尽量保留生存挑战性、缓解游戏寿命缩短的同时降低死亡带来的挫败感。
 - 玩家可使用死亡时的经验值赎回部分物品。基于物品价值表、玩家平均生存时长等多角度计算赎回物品的成本（下称"价格"）。

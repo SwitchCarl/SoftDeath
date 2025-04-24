@@ -102,7 +102,7 @@ public class GUIContent {
         assert metaBarrier != null;
         metaBarrier.setDisplayName(ChatColor.RED + "退出！");
         List<String> loreBarrier = new ArrayList<>();
-        loreBarrier.add(ChatColor.GRAY + "点击以退出界面。");
+        loreBarrier.add(ChatColor.GRAY + "Wake up.");
         metaBarrier.setLore(loreBarrier);
         itemBarrier.setItemMeta(metaBarrier);
         displayInventory.setItem(53, itemBarrier);
