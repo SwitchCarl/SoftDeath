@@ -222,7 +222,11 @@ public class EventListeners implements Listener {
     @EventHandler//                                                                                                     Deal if Any Items Clicked
     public void onInventoryClick(InventoryClickEvent event) {
         // 若是本插件创建的GUI被点击
-        if (!DeathDataManager.getInstance().getData((Player) event.getWhoClicked()).getRespawnDone() && event.getCurrentItem() != null) {
+        if (!DeathDataManager.getInstance().getData((Player) event.getWhoClicked()).getRespawnDone()
+                && event.getCurrentItem() != null
+                && !Objects.requireNonNull(event.getClickedInventory()).getType().getDefaultTitle().equals("Player")) {
+
+
             Player player = (Player) event.getWhoClicked();
             // 点击的物品叫谷子（
             ItemStack goods = event.getCurrentItem();
@@ -325,14 +329,14 @@ public class EventListeners implements Listener {
             }
 
             //if-title                                                                                                  |===玩家物品：预测价格===>
-            if (event.getAction() != InventoryAction.MOVE_TO_OTHER_INVENTORY && event.getSlot() < 45){
+            if (event.getAction() != InventoryAction.MOVE_TO_OTHER_INVENTORY && event.getInventory().getSize() == 54 && event.getSlot() < 45){
                 event.setCancelled(true);
                 assert goods != null;
                 event.getView().setTitle(GUIContent.guiTitle(PriceCalculate.getPrice(goods, player), player, true));
             }
 
             //if-title                                                                                                  |===玩家物品+shift：赎回物品===>
-            if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY && event.getSlot() < 45) {
+            if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY && event.getInventory().getSize() == 54 && event.getSlot() < 45) {
 
                 DeathData deathData = DeathDataManager.getInstance().getData(player);
 
@@ -405,6 +409,8 @@ public class EventListeners implements Listener {
                 event.getView().getTopInventory().setItem(51, GUIContent.expShow(deathData.getMoney()));
                 event.getView().getTopInventory().setItem(46, GUIContent.discountShow(player));
             }
+
+
         }
     }
 }
