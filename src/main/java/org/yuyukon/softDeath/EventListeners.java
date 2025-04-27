@@ -345,7 +345,7 @@ public class EventListeners implements Listener {
                 PlayerInventory realInventory = (PlayerInventory) player.getOpenInventory().getBottomInventory();
                 if (PriceCalculate.getPrice(goods, player) <= DeathDataManager.getInstance().getData(player).getMoney()) {
                     int slot = event.getSlot();
-                    player.playSound(player, Sound.BLOCK_NOTE_BLOCK_BELL, 1.0f, 1.0f);
+                    player.playSound(player, Sound.ENTITY_CHICKEN_EGG, 1.0f, 1.0f);
 
                     //region-title                                                                                      |===赎回物品===>
                                                                                                                         //region Buy Items Back
