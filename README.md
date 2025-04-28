@@ -20,9 +20,7 @@
 1. 构建 jar 文件。
 2. 建议直接新建 `plugins/SoftDeath/config.yml` 文件，然后以 Releases 页面中的 `src\main\resources\config.yml` 文件覆盖，再按需修改内容。（所有项都未设置默认值；因此请不要擅自删除任何未使用（更改）的项）。
 3. 在 `Server.properties` 中启用 `KeepInventory`。
-4. 启动服务器。  
-
-> **注**：不允许在玩家进入服务器后重载插件。建议永远使用重启服务器来重载插件。
+4. 启动服务器。
 
 ### 配置文件格式
 见 `src\main\resources\config.yml` 及其中的注释。建议在增添物品时也加入物品的中文名注释。
@@ -50,7 +48,7 @@
 
 ### GUI展示
 - 当玩家重生时，显示GUI：  
-![When Respawn.png](images%2FWhen%20Respawn.png)
+
 - 通过移动光标查看钻石锄的价格：  
 ![Show Price.png](images%2FShow%20Price.png)
 - 特价的铁剑：  

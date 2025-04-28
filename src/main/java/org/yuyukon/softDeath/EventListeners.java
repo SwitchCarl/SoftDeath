@@ -58,7 +58,7 @@ public class EventListeners implements Listener {
         if (!DeathDataManager.getInstance().getData(event.getPlayer()).getRespawnDone())
             Bukkit.getScheduler().runTaskLater(this.plugin, () -> guiContent.guiInitialize(event.getPlayer()), 20L);
         // 开始追踪
-        eventTrackers.trackPlayer(event.getPlayer());
+        EventTrackers.trackPlayer(event.getPlayer(), this.plugin);
     }
 
     //method-title                                                                                                      |====死亡快照：死亡监听====>

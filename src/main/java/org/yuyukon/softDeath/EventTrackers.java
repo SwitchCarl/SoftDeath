@@ -19,7 +19,7 @@ public class EventTrackers {
 
     //method-title                                                                                                      |====提交时长：玩家追踪====>
     //.                                                                                                                 Submit TIME_SINCE_DEATH Per 60ticks Loop
-    public void trackPlayer(Player player){
+    public static void trackPlayer(Player player, JavaPlugin plugin){
         BukkitRunnable task = new BukkitRunnable() {
             @Override
             public void run() {

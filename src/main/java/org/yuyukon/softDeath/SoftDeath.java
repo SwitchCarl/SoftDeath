@@ -1,8 +1,11 @@
 package org.yuyukon.softDeath;
 
 import org.bukkit.*;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.Collection;
 import java.util.Objects;
 
 public final class SoftDeath extends JavaPlugin implements Listener{
@@ -23,6 +26,15 @@ public final class SoftDeath extends JavaPlugin implements Listener{
         super.reloadConfig();
         priceCalculate = new PriceCalculate(this);
         priceCalculate.loadConfig();
+
+        // 注册、监听已在线玩家
+        Collection<? extends Player> alreadyOnlinePlayers = getServer().getOnlinePlayers();
+        for (Player alreadyOnlinePlayer : alreadyOnlinePlayers) {
+            if (DeathDataManager.getInstance().getData(alreadyOnlinePlayer) == null){
+                DeathDataManager.getInstance().storeData(alreadyOnlinePlayer.getUniqueId(), new DeathData());
+            }
+            EventTrackers.trackPlayer(alreadyOnlinePlayer, this);
+        }
 
         // 注册指令
         Objects.requireNonNull(getCommand("testprice")).setExecutor(new TestPriceCommand());
