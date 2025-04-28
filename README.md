@@ -48,7 +48,7 @@
 
 ### GUI展示
 - 当玩家重生时，显示GUI：  
-
+![When Respawn.png](images%2FWhen%20Respawn.png)
 - 通过移动光标查看钻石锄的价格：  
 ![Show Price.png](images%2FShow%20Price.png)
 - 特价的铁剑：  
