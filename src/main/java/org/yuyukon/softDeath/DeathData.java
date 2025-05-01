@@ -82,7 +82,6 @@ public class DeathData {
         this.isDropDiedFromCactus = false;
         this.isDropOnFire = false;
         this.isDropInLava = false;
-
     }
 
     public void setIsTestPriceOn(boolean isTestPriceOn){

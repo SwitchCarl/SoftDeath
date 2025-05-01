@@ -67,9 +67,13 @@ public class GUIContent {
         float Kl = DeathDataManager.getInstance().getData(player).getKl();
         float Kt = DeathDataManager.getInstance().getData(player).getKt();
         metaBook.setDisplayName(ChatColor.GOLD + "当前总调整系数：" + (Kl*Kt) );
-        loreBook.add(ChatColor.DARK_GREEN + "平均存活时长：" + BigDecimal.valueOf(DeathDataManager.getInstance().getData(player).getAverageLivingTime()/1200).setScale(2, RoundingMode.HALF_UP) +"分钟。");
+        loreBook.add(ChatColor.DARK_GREEN + "平均存活时长：" +
+                BigDecimal.valueOf(DeathDataManager.getInstance().getData(player).getAverageLivingTime())
+                        .divide(new BigDecimal(1200), 2, RoundingMode.HALF_UP) + "分钟。");
         loreBook.add(ChatColor.GREEN + "调整系数：" + Kl);
-        loreBook.add(ChatColor.DARK_GREEN + "上次存活时长：" + BigDecimal.valueOf(DeathDataManager.getInstance().getData(player).getLastLivingTime()/1200).setScale(2, RoundingMode.HALF_UP) +"分钟。");
+        loreBook.add(ChatColor.DARK_GREEN + "上次存活时长：" +
+                BigDecimal.valueOf(DeathDataManager.getInstance().getData(player).getLastLivingTime())
+                        .divide(new BigDecimal(1200), 2, RoundingMode.HALF_UP) + "分钟。");
         loreBook.add(ChatColor.GREEN + "调整系数：" + Kt);
         metaBook.setLore(loreBook);
         itemBook.setItemMeta(metaBook);

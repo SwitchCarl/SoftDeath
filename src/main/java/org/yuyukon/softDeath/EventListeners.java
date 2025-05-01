@@ -50,15 +50,20 @@ public class EventListeners implements Listener {
     //method-title                                                                                                      |====玩家注册：进服监听====>
     @EventHandler//                                                                                                     Register DeathData and Start Tracking
     public void onPlayerJoin(PlayerJoinEvent event){
-        // 注册信息
+        // 注册信息e
+
         if (DeathDataManager.getInstance().getData(event.getPlayer()) == null){
             DeathDataManager.getInstance().storeData(event.getPlayer().getUniqueId(), new DeathData());
+        }else {
+            if (!DeathDataManager.getInstance().getData(event.getPlayer()).getRespawnDone())
+                Bukkit.getScheduler().runTaskLater(this.plugin, () -> guiContent.guiInitialize(event.getPlayer()), 20L);
         }
-        // 若仍处于未重生状态，20tick后启动gui
-        if (!DeathDataManager.getInstance().getData(event.getPlayer()).getRespawnDone())
-            Bukkit.getScheduler().runTaskLater(this.plugin, () -> guiContent.guiInitialize(event.getPlayer()), 20L);
         // 开始追踪
         EventTrackers.trackPlayer(event.getPlayer(), this.plugin);
+
+        // 若仍处于未重生状态，20tick后启动gui
+
+
     }
 
     //method-title                                                                                                      |====死亡快照：死亡监听====>
@@ -85,7 +90,9 @@ public class EventListeners implements Listener {
         //region-title                                                                                                  |==死亡快照==>
                                                                                                                         //region Death Snapshot
         // 按下快门，死亡快照已建立！可以随便改动的全局数据！好耶！
-
+        double averageLivingTime = player.getStatistic(Statistic.PLAY_ONE_MINUTE);
+        if (player.getStatistic(Statistic.DEATHS) != 0)
+            averageLivingTime = (double) player.getStatistic(Statistic.PLAY_ONE_MINUTE) / player.getStatistic(Statistic.DEATHS);
         DeathDataManager.getInstance().getData(player).submitDeathData(
                 // 获取死亡地点
                 player.getLocation(),
@@ -94,7 +101,7 @@ public class EventListeners implements Listener {
                 // 获取玩家的总经验（待改进）
                 player.getTotalExperience(),
                 // 获取平均存活时间
-                (double) player.getStatistic(Statistic.PLAY_ONE_MINUTE) /player.getStatistic(Statistic.DEATHS)
+                averageLivingTime
         );
         //endregion
 
@@ -143,7 +150,7 @@ public class EventListeners implements Listener {
         //region-title                                                                                                  |==孟婆例汤==>
                                                                                                                         //region Clear Inventory and Experience
 
-        // 延迟5tick清除玩家的背包与经验
+        // 延迟2tick清除玩家的背包与经验
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             PlayerInventory realInventory = player.getInventory();
             // 清空主物品栏（0~35格）
@@ -159,7 +166,7 @@ public class EventListeners implements Listener {
             player.setTotalExperience(0);
             player.setLevel(0);
             player.setExp(0);
-        }, 5L);
+        }, 2L);
         //endregion
 
         // 音效：信标切换效果（延迟10tick）
@@ -213,9 +220,11 @@ public class EventListeners implements Listener {
     //method-title                                                                                                      |====界面保护：关闭监听====>
     @EventHandler//                                                                                                     Reopen GUI when Unexpectedly Closed
     public void avoidGUIClose(InventoryCloseEvent event){
-        if (!DeathDataManager.getInstance().getData((Player) event.getPlayer()).getRespawnDone()){
-            Bukkit.getScheduler().runTaskLater(plugin, () -> guiContent.guiInitialize((Player) event.getPlayer()), 2L);
-        }
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            if (!DeathDataManager.getInstance().getData((Player) event.getPlayer()).getRespawnDone()){
+                guiContent.guiInitialize((Player) event.getPlayer());
+            }
+        }, 2L);
     }
 
     //method-title                                                                                                      |====点击物品：点击监听====>
@@ -226,13 +235,14 @@ public class EventListeners implements Listener {
                 && event.getCurrentItem() != null
                 && !Objects.requireNonNull(event.getClickedInventory()).getType().getDefaultTitle().equals("Player")) {
 
-
+            event.setCancelled(true);
             Player player = (Player) event.getWhoClicked();
             // 点击的物品叫谷子（
             ItemStack goods = event.getCurrentItem();
 
             //if-title                                                                                                  |===火箭：广播并更新坐标===>
             if (event.getSlot() == 48) {
+                event.setCancelled(true);
                 event.getInventory().setItem(49, GUIContent.dropLocationShow(player));
 
                 player.playSound(player, Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 1.0f, 1.0f);
@@ -254,7 +264,6 @@ public class EventListeners implements Listener {
 
             //if-title                                                                                                  |===屏障：退出===>
             if (event.getSlot() == 53){
-                event.setCancelled(true);
 
                 // 重新赋予剩余的经验
                 player.giveExp((int) (0.7f * DeathDataManager.getInstance().getData(player).getMoney()));
@@ -323,9 +332,13 @@ public class EventListeners implements Listener {
                 }
                 //endregion
 
-                deathData.doRespawnDone();
-                // 2tick后关闭GUI
-                Bukkit.getScheduler().runTaskLater(plugin, player::closeInventory, 5L);
+
+
+                // 1tick后关闭GUI
+                Bukkit.getScheduler().runTaskLater(plugin, player::closeInventory, 1L);
+                // 2tick后启用重生
+                Bukkit.getScheduler().runTaskLater(plugin, deathData::doRespawnDone, 2L);
+
             }
 
             //if-title                                                                                                  |===玩家物品：预测价格===>
@@ -398,13 +411,12 @@ public class EventListeners implements Listener {
                                 deathData.spendDiscount(2);
                         event.getView().close();
                     }
-                    Bukkit.getScheduler().runTaskLater(plugin, () -> event.getView().setTitle(GUIContent.guiTitle(deathData.getMoney(), player, false)), 5L);
+                    Bukkit.getScheduler().runTaskLater(plugin, () -> event.getView().setTitle(GUIContent.guiTitle(deathData.getMoney(), player, false)), 1L);
                     //endregion
                 }
-                else {
-                    event.setCancelled(true);
+                else
                     player.playSound(player, Sound.BLOCK_NOTE_BLOCK_DIDGERIDOO, 1.0f, 1.0f);
-                }
+
                 // 更新ui！
                 event.getView().getTopInventory().setItem(51, GUIContent.expShow(deathData.getMoney()));
                 event.getView().getTopInventory().setItem(46, GUIContent.discountShow(player));
