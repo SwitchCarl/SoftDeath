@@ -186,7 +186,7 @@ cheap-block-item:                       # 廉价方块
     - DEEPSLATE					# 深板岩
     - COBBLED_DEEPSLATE			# 深板岩圆石
     - STONE						# 石头
-    - COBBLEDSTONE				# 圆石
+    - COBBLESTONE				# 圆石
     - MOSSY_COBBLESTONE			# 苔石
     - SANDSTONE					# 砂岩
     - RED_SANDSTONE				# 红砂岩
