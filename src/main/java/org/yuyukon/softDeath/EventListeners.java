@@ -329,11 +329,14 @@ public class EventListeners implements Listener {
                 }
                 //endregion
 
-                EventTrackers.trackPlayer(player, this.plugin);
+
                 // 1tick后关闭GUI
                 Bukkit.getScheduler().runTaskLater(plugin, player::closeInventory, 1L);
                 // 2tick后启用重生
                 Bukkit.getScheduler().runTaskLater(plugin, deathData::doRespawnDone, 2L);
+                // 3tick后启用追踪
+                Bukkit.getScheduler().runTaskLater(plugin, () -> EventTrackers.trackPlayer(player, this.plugin), 3L);
+
 
             }
             //if-title                                                                                                  |===玩家物品：预测价格===>
