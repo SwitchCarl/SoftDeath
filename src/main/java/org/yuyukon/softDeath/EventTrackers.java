@@ -25,10 +25,10 @@ public class EventTrackers {
             public void run() {
                 if (player.isOnline() && DeathDataManager.getInstance().getData(player).getRespawnDone()){
                     DeathDataManager.getInstance().getData(player).submitLastLivingTime((long) player.getStatistic(Statistic.TIME_SINCE_DEATH));
-                    plugin.getServer().getLogger().info("" + player.getStatistic(Statistic.TIME_SINCE_DEATH));
                 }
-                else
+                else {
                     cancel();
+                }
             }
         };
         task.runTaskTimer(plugin, 0, 60);
