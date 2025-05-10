@@ -58,8 +58,8 @@ public class DeathData {
 
         if (!isTestPriceOn) {
             // 计算玩家水平系数
-            if (averageLivingTime <= 720000)
-                this.Kl = (float) (0.3*Math.log((averageLivingTime/(240*1200))+0.1)+0.715);
+            if (averageLivingTime <= 7*1200*60)
+                this.Kl = (float) (Math.log(averageLivingTime/(1200*60) + 17) + 1 - Math.log(24));
             else
                 this.Kl = 1;
 
@@ -71,7 +71,7 @@ public class DeathData {
             } else {
                 this.Kt = BigDecimal.valueOf(0.2977181197025617 * Math.exp(-Math.pow( lastLivingTime - 70700.0, 2) / 8.978E9) + 1.05).setScale(5, RoundingMode.HALF_UP).floatValue();
             }
-        }else {
+        } else {
             this.Kl = 1;
             this.Kt = 1;
         }

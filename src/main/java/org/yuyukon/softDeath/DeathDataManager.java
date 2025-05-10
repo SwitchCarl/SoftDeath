@@ -11,7 +11,8 @@ public class DeathDataManager {
     private final Map<UUID, DeathData> deathDataMap= new ConcurrentHashMap<>();
 
     public static DeathDataManager getInstance() {
-        if (instance == null){ instance = new DeathDataManager(); }
+        if (instance == null)
+            instance = new DeathDataManager();
         return instance;
     }
 

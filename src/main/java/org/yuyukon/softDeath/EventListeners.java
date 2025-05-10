@@ -54,15 +54,12 @@ public class EventListeners implements Listener {
 
         if (DeathDataManager.getInstance().getData(event.getPlayer()) == null){
             DeathDataManager.getInstance().storeData(event.getPlayer().getUniqueId(), new DeathData());
-        }else {
+        } else {
             if (!DeathDataManager.getInstance().getData(event.getPlayer()).getRespawnDone())
                 Bukkit.getScheduler().runTaskLater(this.plugin, () -> guiContent.guiInitialize(event.getPlayer()), 20L);
         }
         // 开始追踪
         EventTrackers.trackPlayer(event.getPlayer(), this.plugin);
-
-        // 若仍处于未重生状态，20tick后启动gui
-
 
     }
 
@@ -332,15 +329,13 @@ public class EventListeners implements Listener {
                 }
                 //endregion
 
-
-
+                EventTrackers.trackPlayer(player, this.plugin);
                 // 1tick后关闭GUI
                 Bukkit.getScheduler().runTaskLater(plugin, player::closeInventory, 1L);
                 // 2tick后启用重生
                 Bukkit.getScheduler().runTaskLater(plugin, deathData::doRespawnDone, 2L);
 
             }
-
             //if-title                                                                                                  |===玩家物品：预测价格===>
             if (event.getAction() != InventoryAction.MOVE_TO_OTHER_INVENTORY && event.getInventory().getSize() == 54 && event.getSlot() < 45){
                 event.setCancelled(true);
@@ -421,8 +416,6 @@ public class EventListeners implements Listener {
                 event.getView().getTopInventory().setItem(51, GUIContent.expShow(deathData.getMoney()));
                 event.getView().getTopInventory().setItem(46, GUIContent.discountShow(player));
             }
-
-
         }
     }
 }
