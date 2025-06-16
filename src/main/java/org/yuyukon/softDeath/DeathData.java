@@ -131,7 +131,7 @@ public class DeathData {
     //endregion
 
     public ItemStack[] getInventory() { return inventory; }
-    public void buyInventory(int slot) { this.inventory[slot] = new ItemStack(Material.AIR); }
+    public void buyInventory(int slot) { this.inventory[slot] = null; }
 
     public int getExpOnDeath(){ return expOnDeath; }
     public int getMoney() { return money; }

@@ -22,6 +22,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -119,58 +120,60 @@ public class EventListeners implements Listener {
     //method-title                                                                                                      |====界面处理：重生监听====>
     @EventHandler//                                                                                                     Frozen Player and Clear Inventory to Open GUI
     public void onPlayerRespawn(PlayerRespawnEvent event) {
-        Player player = event.getPlayer();
-        //region-title                                                                                                  |==冻结玩家==>
-                                                                                                                        //region Frozen Player
-        player.setWalkSpeed(0.0f);
-        player.setFlySpeed(0.0f);
-        player.setAllowFlight(true);
-        player.setFlying(true);
-        // 50级缓慢
-        player.addPotionEffect(new PotionEffect(
-                PotionEffectType.SLOWNESS,
-                Integer.MAX_VALUE,
-                50,
-                false,
-                false
-        ));
-        // 50级失明
-        player.addPotionEffect(new PotionEffect(
-                PotionEffectType.BLINDNESS,
-                Integer.MAX_VALUE,
-                1,
-                false,
-                false
-        ));
-        //endregion
+        if (event.getPlayer().getGameMode() == GameMode.SPECTATOR) {
+            Player player = event.getPlayer();
+            //region-title                                                                                                  |==冻结玩家==>
+            //region Frozen Player
+            player.setWalkSpeed(0.0f);
+            player.setFlySpeed(0.0f);
+            player.setAllowFlight(true);
+            player.setFlying(true);
+            // 50级缓慢
+            player.addPotionEffect(new PotionEffect(
+                    PotionEffectType.SLOWNESS,
+                    Integer.MAX_VALUE,
+                    50,
+                    false,
+                    false
+            ));
+            // 50级失明
+            player.addPotionEffect(new PotionEffect(
+                    PotionEffectType.BLINDNESS,
+                    Integer.MAX_VALUE,
+                    1,
+                    false,
+                    false
+            ));
+            //endregion
 
-        //region-title                                                                                                  |==孟婆例汤==>
-                                                                                                                        //region Clear Inventory and Experience
+            //region-title                                                                                                  |==孟婆例汤==>
+            //region Clear Inventory and Experience
 
-        // 延迟2tick清除玩家的背包与经验
-        Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            PlayerInventory realInventory = player.getInventory();
-            // 清空主物品栏（0~35格）
-            realInventory.clear();
-            // 清空盔甲槽（头盔、胸甲、护腿、靴子）
-            realInventory.setHelmet(null);
-            realInventory.setChestplate(null);
-            realInventory.setLeggings(null);
-            realInventory.setBoots(null);
-            // 清空副手
-            realInventory.setItemInOffHand(null);
-            // 清空经验值
-            player.setTotalExperience(0);
-            player.setLevel(0);
-            player.setExp(0);
-        }, 2L);
-        //endregion
+            // 延迟2tick清除玩家的背包与经验
+            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                PlayerInventory realInventory = player.getInventory();
+                // 清空主物品栏（0~35格）
+                realInventory.clear();
+                // 清空盔甲槽（头盔、胸甲、护腿、靴子）
+                realInventory.setHelmet(null);
+                realInventory.setChestplate(null);
+                realInventory.setLeggings(null);
+                realInventory.setBoots(null);
+                // 清空副手
+                realInventory.setItemInOffHand(null);
+                // 清空经验值
+                player.setTotalExperience(0);
+                player.setLevel(0);
+                player.setExp(0);
+            }, 2L);
+            //endregion
 
-        // 音效：信标切换效果（延迟10tick）
-        Bukkit.getScheduler().runTaskLater(plugin, () -> player.playSound(player, Sound.BLOCK_BEACON_POWER_SELECT, 1.0f, 1.0f), 10L);
+            // 音效：信标切换效果（延迟10tick）
+            Bukkit.getScheduler().runTaskLater(plugin, () -> player.playSound(player, Sound.BLOCK_BEACON_POWER_SELECT, 1.0f, 1.0f), 10L);
 
-        // 启动GUI
-        guiContent.guiInitialize(player);
+            // 启动GUI
+            guiContent.guiInitialize(player);
+        }
     }
 
     //method-title                                                                                                      |====提交苦痛：标记监听====>
@@ -387,6 +390,7 @@ public class EventListeners implements Listener {
                     }
                     // 扣除归档物品栏中的物品
                     deathData.buyInventory(event.getSlot());
+
                     // 扣除GUI中的物品
                     event.getView().getTopInventory().setItem(event.getSlot(), new ItemStack(Material.AIR));
                     // 若使用特价
